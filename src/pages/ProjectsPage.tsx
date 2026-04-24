@@ -42,7 +42,7 @@ export default function ProjectsPage() {
     try {
       const project = await api.addProject(newProjectPath.trim());
       setProjects([...projects, project]);
-      
+
       // 加载初始状态
       const state = await api.getProjectState(project.id);
       setProjectState(project.id, state);
@@ -72,13 +72,13 @@ export default function ProjectsPage() {
 
   return (
     <Layout>
-      <div className="p-6">
+      <div className="h-full overflow-auto p-5">
         {/* Header */}
-        <div className="flex items-center justify-between mb-6">
-          <h2 className="text-2xl font-bold text-gray-900">项目列表</h2>
+        <div className="flex items-center justify-between mb-5">
+          <h2 className="text-lg font-bold text-gray-900">项目列表</h2>
           <button
             onClick={() => setShowAddModal(true)}
-            className="px-4 py-2 bg-primary-500 hover:bg-primary-600 text-white font-medium rounded-lg transition-colors"
+            className="px-3 py-1.5 bg-primary-500 hover:bg-primary-600 text-white text-sm font-medium rounded transition-colors"
           >
             添加项目
           </button>
@@ -87,11 +87,11 @@ export default function ProjectsPage() {
         {/* Projects Grid */}
         {projects.length === 0 ? (
           <div className="text-center py-12">
-            <p className="text-gray-500">暂无项目</p>
-            <p className="text-sm text-gray-400 mt-2">点击上方按钮添加项目</p>
+            <p className="text-gray-500 text-sm">暂无项目</p>
+            <p className="text-xs text-gray-400 mt-1">点击上方按钮添加项目</p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
             {projects.map((project) => (
               <div key={project.id} className="relative">
                 <ProjectCard
@@ -104,10 +104,10 @@ export default function ProjectsPage() {
                     e.stopPropagation();
                     handleRemoveProject(project.id, project.name);
                   }}
-                  className="absolute top-3 right-3 p-1 text-gray-400 hover:text-red-500 transition-colors"
+                  className="absolute top-2 right-2 p-1 text-gray-400 hover:text-red-500 transition-colors"
                   title="移除项目"
                 >
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                   </svg>
                 </button>
@@ -119,11 +119,11 @@ export default function ProjectsPage() {
         {/* Add Project Modal */}
         {showAddModal && (
           <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-            <div className="bg-white rounded-lg p-6 w-full max-w-md">
-              <h3 className="text-lg font-semibold mb-4">添加项目</h3>
+            <div className="bg-white rounded-lg p-5 w-full max-w-md">
+              <h3 className="text-base font-semibold mb-3">添加项目</h3>
 
-              <div className="mb-4">
-                <label className="block text-sm text-gray-600 mb-2">
+              <div className="mb-3">
+                <label className="block text-sm text-gray-600 mb-1">
                   项目路径
                 </label>
                 <input
@@ -131,12 +131,12 @@ export default function ProjectsPage() {
                   value={newProjectPath}
                   onChange={(e) => setNewProjectPath(e.target.value)}
                   placeholder="/path/to/project"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 text-sm"
                 />
               </div>
 
               {error && (
-                <div className="mb-4 p-3 bg-red-50 text-red-600 rounded-lg text-sm">
+                <div className="mb-3 p-2.5 bg-red-50 text-red-600 rounded-lg text-sm">
                   {error}
                 </div>
               )}
@@ -148,14 +148,14 @@ export default function ProjectsPage() {
                     setNewProjectPath('');
                     setError('');
                   }}
-                  className="flex-1 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors"
+                  className="flex-1 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors text-sm"
                 >
                   取消
                 </button>
                 <button
                   onClick={handleAddProject}
                   disabled={loading || !newProjectPath.trim()}
-                  className="flex-1 py-2 bg-primary-500 hover:bg-primary-600 text-white rounded-lg disabled:opacity-50 transition-colors"
+                  className="flex-1 py-2 bg-primary-500 hover:bg-primary-600 text-white rounded-lg disabled:opacity-50 transition-colors text-sm"
                 >
                   {loading ? '添加中...' : '添加'}
                 </button>

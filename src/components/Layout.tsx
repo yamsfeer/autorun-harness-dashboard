@@ -4,11 +4,12 @@ import { useStore } from '../stores/useStore';
 
 interface LayoutProps {
   children: ReactNode;
+  sidebar?: ReactNode;
 }
 
-export default function Layout({ children }: LayoutProps) {
+export default function Layout({ children, sidebar }: LayoutProps) {
   const navigate = useNavigate();
-  const { projects, connected, setToken } = useStore();
+  const { connected, setToken } = useStore();
 
   const handleLogout = () => {
     setToken(null);
@@ -16,47 +17,53 @@ export default function Layout({ children }: LayoutProps) {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <header className="bg-white border-b border-gray-200 h-16 fixed top-0 left-0 right-0 z-10">
-        <div className="h-full px-6 flex items-center justify-between">
-          <div className="flex items-center gap-4">
-            <h1 className="text-xl font-bold text-gray-900">
-              Autorun Harness Dashboard
-            </h1>
-            <span className="text-sm text-gray-500">
-              {projects.length} 个项目
+    <div className="h-screen flex flex-col bg-gray-50">
+      {/* Header - 极简 */}
+      <header className="h-9 bg-white border-b border-gray-200 flex items-center justify-between px-4 shrink-0 z-10">
+        <button
+          onClick={() => navigate('/')}
+          className="text-sm font-semibold text-gray-900 hover:text-primary-600 transition-colors"
+        >
+          Autorun Harness
+        </button>
+
+        <div className="flex items-center gap-3">
+          {/* 连接状态 */}
+          <div className="flex items-center gap-1.5">
+            <span
+              className={`w-1.5 h-1.5 rounded-full ${
+                connected ? 'bg-green-500' : 'bg-red-500'
+              }`}
+            />
+            <span className="text-xs text-gray-400">
+              {connected ? '在线' : '离线'}
             </span>
           </div>
 
-          <div className="flex items-center gap-4">
-            {/* 连接状态 */}
-            <div className="flex items-center gap-2 text-sm">
-              <span
-                className={`w-2 h-2 rounded-full ${
-                  connected ? 'bg-green-500' : 'bg-red-500'
-                }`}
-              />
-              <span className="text-gray-500">
-                {connected ? '已连接' : '已断开'}
-              </span>
-            </div>
-
-            {/* 退出按钮 */}
-            <button
-              onClick={handleLogout}
-              className="text-gray-500 hover:text-gray-700 text-sm"
-            >
-              退出
-            </button>
-          </div>
+          {/* 退出 */}
+          <button
+            onClick={handleLogout}
+            className="text-gray-400 hover:text-gray-600 text-xs"
+          >
+            退出
+          </button>
         </div>
       </header>
 
-      {/* Main Content */}
-      <main className="pt-16">
-        {children}
-      </main>
+      {/* Body */}
+      <div className="flex-1 flex overflow-hidden">
+        {/* Sidebar */}
+        {sidebar && (
+          <aside className="w-44 bg-white border-r border-gray-200 flex flex-col shrink-0 overflow-y-auto">
+            {sidebar}
+          </aside>
+        )}
+
+        {/* Main Content */}
+        <main className="flex-1 overflow-hidden">
+          {children}
+        </main>
+      </div>
     </div>
   );
 }

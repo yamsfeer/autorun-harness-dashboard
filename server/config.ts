@@ -5,7 +5,7 @@ import crypto from 'crypto';
 import type { DashboardConfig, ProjectConfig } from './types.js';
 
 const CONFIG_DIR = path.join(os.homedir(), '.config', 'autorun-harness');
-const CONFIG_FILE = path.join(CONFIG_DIR, 'config.json');
+const CONFIG_FILE = path.join(CONFIG_DIR, 'dashboard.config.json');
 
 // 固定账号密码
 const FIXED_USERNAME = 'admin';
@@ -13,7 +13,7 @@ const FIXED_PASSWORD = '111';
 
 const DEFAULT_CONFIG: Omit<DashboardConfig, 'passwordHash' | 'jwtSecret'> = {
   version: '1.0.0',
-  port: 3001,
+  port: 9100,
   projects: [],
 };
 

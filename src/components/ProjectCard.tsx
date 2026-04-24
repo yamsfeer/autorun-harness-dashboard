@@ -32,9 +32,9 @@ export default function ProjectCard({ project, state }: ProjectCardProps) {
           <h3 className="text-lg font-semibold text-gray-900">{project.name}</h3>
           <p className="text-sm text-gray-500 mt-1 truncate">{project.path}</p>
         </div>
-        <div className="flex items-center gap-1.5">
-          <span className={`w-2 h-2 rounded-full ${statusColor}`} />
-          <span className="text-xs text-gray-500">{statusText}</span>
+        <div className="flex items-center gap-1.5 shrink-0 ml-3">
+          <span className={`w-2 h-2 rounded-full shrink-0 ${statusColor}`} />
+          <span className="text-xs text-gray-500 whitespace-nowrap">{statusText}</span>
         </div>
       </div>
 
