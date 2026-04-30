@@ -56,29 +56,22 @@ export default function ProjectsPage() {
     }
   };
 
-  const handleRemoveProject = async (projectId: string, projectName: string) => {
-    if (!confirm(`确定要移除项目 "${projectName}" 吗？`)) {
-      return;
-    }
-
-    try {
-      await api.removeProject(projectId);
-      const { removeProject } = useStore.getState();
-      removeProject(projectId);
-    } catch (err) {
-      alert((err as Error).message);
-    }
-  };
-
   return (
     <Layout>
-      <div className="h-full overflow-auto p-5">
+      <div className="h-full overflow-auto px-6 py-8 max-w-7xl mx-auto">
         {/* Header */}
-        <div className="flex items-center justify-between mb-5">
-          <h2 className="text-lg font-bold text-gray-900">项目列表</h2>
+        <div className="flex items-center justify-between mb-6">
+          <div>
+            <h1 className="text-3xl font-medium font-serif text-nearblack" style={{ fontFamily: 'Georgia, serif' }}>项目列表</h1>
+            {projects.length > 0 && (
+              <p className="text-base text-olive mt-1">
+                {projects.length} 个项目 · {projects.filter(p => p.status === 'active').length} 运行中
+              </p>
+            )}
+          </div>
           <button
             onClick={() => setShowAddModal(true)}
-            className="px-3 py-1.5 bg-primary-500 hover:bg-primary-600 text-white text-sm font-medium rounded transition-colors"
+            className="px-4 py-2 bg-terracotta hover:bg-terracotta-hover text-ivory text-sm font-medium rounded-xl transition-colors"
           >
             添加项目
           </button>
@@ -87,43 +80,29 @@ export default function ProjectsPage() {
         {/* Projects Grid */}
         {projects.length === 0 ? (
           <div className="text-center py-12">
-            <p className="text-gray-500 text-sm">暂无项目</p>
-            <p className="text-xs text-gray-400 mt-1">点击上方按钮添加项目</p>
+            <p className="text-olive text-sm">暂无项目</p>
+            <p className="text-xs text-stone mt-1">点击上方按钮添加项目</p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
             {projects.map((project) => (
-              <div key={project.id} className="relative">
-                <ProjectCard
-                  project={project}
-                  state={projectStates[project.id]}
-                />
-                {/* 删除按钮 */}
-                <button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    handleRemoveProject(project.id, project.name);
-                  }}
-                  className="absolute top-2 right-2 p-1 text-gray-400 hover:text-red-500 transition-colors"
-                  title="移除项目"
-                >
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                  </svg>
-                </button>
-              </div>
+              <ProjectCard
+                key={project.id}
+                project={project}
+                state={projectStates[project.id]}
+              />
             ))}
           </div>
         )}
 
         {/* Add Project Modal */}
         {showAddModal && (
-          <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-            <div className="bg-white rounded-lg p-5 w-full max-w-md">
-              <h3 className="text-base font-semibold mb-3">添加项目</h3>
+          <div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center z-50">
+            <div className="bg-ivory rounded-2xl p-5 w-full max-w-md shadow-whisper">
+              <h3 className="text-base font-medium font-serif text-nearblack mb-3">添加项目</h3>
 
               <div className="mb-3">
-                <label className="block text-sm text-gray-600 mb-1">
+                <label className="block text-sm text-olive mb-1">
                   项目路径
                 </label>
                 <input
@@ -131,12 +110,12 @@ export default function ProjectsPage() {
                   value={newProjectPath}
                   onChange={(e) => setNewProjectPath(e.target.value)}
                   placeholder="/path/to/project"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 text-sm"
+                  className="w-full px-3 py-2 border border-borderCream rounded-xl bg-white focus:ring-2 focus:ring-focusBlue/30 focus:border-focusBlue text-sm transition-colors"
                 />
               </div>
 
               {error && (
-                <div className="mb-3 p-2.5 bg-red-50 text-red-600 rounded-lg text-sm">
+                <div className="mb-3 p-2.5 bg-warmRedLight text-warmRed rounded-lg text-sm">
                   {error}
                 </div>
               )}
@@ -148,14 +127,14 @@ export default function ProjectsPage() {
                     setNewProjectPath('');
                     setError('');
                   }}
-                  className="flex-1 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors text-sm"
+                  className="flex-1 py-2 bg-warmSand rounded-lg text-charcoal hover:shadow-ring-warm transition-all text-sm"
                 >
                   取消
                 </button>
                 <button
                   onClick={handleAddProject}
                   disabled={loading || !newProjectPath.trim()}
-                  className="flex-1 py-2 bg-primary-500 hover:bg-primary-600 text-white rounded-lg disabled:opacity-50 transition-colors text-sm"
+                  className="flex-1 py-2 bg-terracotta hover:bg-terracotta-hover text-ivory rounded-xl disabled:opacity-50 transition-colors text-sm"
                 >
                   {loading ? '添加中...' : '添加'}
                 </button>

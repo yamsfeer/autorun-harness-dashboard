@@ -1,0 +1,15 @@
+name: Login
+viewport:
+  width: 1440
+  height: 900
+steps:
+  - goto: /login
+  - wait: 500
+  - fill:
+      selector: "input[type='text']"
+      value: "admin"
+  - fill:
+      selector: "input[type='password']"
+      value: "111"
+  - click: "button[type='submit']"
+  - wait: 2000

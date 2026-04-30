@@ -47,19 +47,19 @@ function parseLogs(content: string): LogEntry[] {
 }
 
 const levelStyles: Record<LogEntry['level'], string> = {
-  info: 'text-gray-600',
-  success: 'text-green-600',
-  warning: 'text-yellow-600',
-  error: 'text-red-600',
-  section: 'text-gray-900 font-semibold',
+  info: 'text-warmSilver',
+  success: 'text-warmGreen',
+  warning: 'text-warmAmber',
+  error: 'text-warmRed',
+  section: 'text-ivory font-semibold',
 };
 
 const levelBadge: Record<LogEntry['level'], { bg: string; text: string; label: string }> = {
-  info: { bg: 'bg-gray-100', text: 'text-gray-500', label: 'INFO' },
-  success: { bg: 'bg-green-100', text: 'text-green-600', label: 'OK' },
-  warning: { bg: 'bg-yellow-100', text: 'text-yellow-600', label: 'WARN' },
-  error: { bg: 'bg-red-100', text: 'text-red-600', label: 'ERR' },
-  section: { bg: 'bg-gray-200', text: 'text-gray-700', label: '→' },
+  info: { bg: 'bg-darkSurface', text: 'text-warmSilver', label: 'INFO' },
+  success: { bg: 'bg-warmGreen/20', text: 'text-warmGreen', label: 'OK' },
+  warning: { bg: 'bg-warmAmber/20', text: 'text-warmAmber', label: 'WARN' },
+  error: { bg: 'bg-warmRed/20', text: 'text-warmRed', label: 'ERR' },
+  section: { bg: 'bg-darkSurface', text: 'text-ivory', label: '→' },
 };
 
 export default function LogViewer({ content }: LogViewerProps) {
@@ -92,9 +92,9 @@ export default function LogViewer({ content }: LogViewerProps) {
   };
 
   return (
-    <div className="h-full flex flex-col bg-white rounded-lg border border-gray-200">
+    <div className="h-full flex flex-col bg-deepDark rounded-lg border border-borderDark">
       {/* Toolbar */}
-      <div className="flex items-center justify-between px-3 py-2 border-b border-gray-100 shrink-0">
+      <div className="flex items-center justify-between px-3 py-2 border-b border-borderDark shrink-0">
         <div className="flex items-center gap-1">
           {(['all', 'error', 'warning', 'success'] as const).map((f) => (
             <button
@@ -102,8 +102,8 @@ export default function LogViewer({ content }: LogViewerProps) {
               onClick={() => setFilter(f)}
               className={`px-2 py-1 text-xs rounded transition-colors ${
                 filter === f
-                  ? 'bg-gray-900 text-white'
-                  : 'text-gray-500 hover:bg-gray-100'
+                  ? 'bg-darkSurface text-ivory'
+                  : 'text-warmSilver hover:bg-darkSurface'
               }`}
             >
               {f === 'all' ? '全部' : f === 'error' ? '错误' : f === 'warning' ? '警告' : '成功'}
@@ -111,7 +111,7 @@ export default function LogViewer({ content }: LogViewerProps) {
             </button>
           ))}
         </div>
-        <span className="text-xs text-gray-400">{entries.length} 行</span>
+        <span className="text-xs text-warmSilver/60">{entries.length} 行</span>
       </div>
 
       {/* Log entries */}
@@ -121,23 +121,23 @@ export default function LogViewer({ content }: LogViewerProps) {
         className="flex-1 overflow-y-auto font-mono text-sm"
       >
         {filtered.length === 0 ? (
-          <div className="flex items-center justify-center h-full text-gray-400 text-sm">
+          <div className="flex items-center justify-center h-full text-warmSilver/60 text-sm">
             暂无日志
           </div>
         ) : (
-          <div className="divide-y divide-gray-50">
+          <div className="divide-y divide-borderDark">
             {filtered.map((entry, idx) => {
               const badge = levelBadge[entry.level];
               return (
                 <div
                   key={idx}
-                  className={`flex items-start gap-2 px-3 py-1.5 hover:bg-gray-50 transition-colors ${levelStyles[entry.level]}`}
+                  className={`flex items-start gap-2 px-3 py-1.5 hover:bg-darkSurface/50 transition-colors ${levelStyles[entry.level]}`}
                 >
                   <span className={`shrink-0 mt-0.5 px-1 py-0.5 rounded text-[10px] font-bold leading-none ${badge.bg} ${badge.text}`}>
                     {badge.label}
                   </span>
                   {entry.time && (
-                    <span className="shrink-0 text-gray-400 text-xs mt-0.5 w-[60px]">
+                    <span className="shrink-0 text-warmSilver/60 text-xs mt-0.5 w-[60px]">
                       {entry.time}
                     </span>
                   )}

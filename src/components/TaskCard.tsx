@@ -6,63 +6,50 @@ interface TaskCardProps {
 }
 
 export default function TaskCard({ task, onClick }: TaskCardProps) {
-  const statusColors: Record<string, string> = {
-    pending: 'bg-gray-50 border-gray-200',
-    in_progress: 'bg-blue-50 border-blue-200',
-    completed: 'bg-green-50 border-green-200',
-    blocked: 'bg-yellow-50 border-yellow-200',
-    needs_human: 'bg-red-50 border-red-200',
+  const priorityColors: Record<string, { bg: string; text: string; label: string }> = {
+    high: { bg: 'bg-warmRedLight', text: 'text-warmRed', label: '高' },
+    medium: { bg: 'bg-warmAmberLight', text: 'text-warmAmber', label: '中' },
+    low: { bg: 'bg-borderCream', text: 'text-stone', label: '低' },
   };
 
-  const priorityColors: Record<string, string> = {
-    high: 'text-red-600',
-    medium: 'text-yellow-600',
-    low: 'text-gray-500',
-  };
-
-  // 计算验收标准通过率
   const acTotal = task.acceptance_criteria.length;
   const acPassed = task.acceptance_criteria.filter(ac => ac.status === 'pass').length;
-  const acPercentage = acTotal > 0 ? Math.round((acPassed / acTotal) * 100) : 0;
 
   return (
     <div
       onClick={onClick}
-      className={`p-3 rounded-lg border cursor-pointer hover:shadow-sm transition-shadow ${statusColors[task.status]}`}
+      className="bg-white border border-borderCream rounded-lg p-3 cursor-pointer hover:shadow-ring-warm transition-shadow"
     >
       {/* Title */}
-      <h4 className="font-medium text-gray-900 text-sm mb-2">{task.title}</h4>
+      <h2 className="font-medium font-serif text-nearblack text-sm mb-2" style={{ fontFamily: 'Georgia, serif' }}>
+        {task.title}
+      </h2>
 
-      {/* ID and Priority */}
+      {/* Priority badge + AC dots */}
       <div className="flex items-center gap-2 mb-2">
-        <span className="text-xs text-gray-500">{task.id}</span>
-        <span className={`text-xs ${priorityColors[task.priority]}`}>
-          {task.priority === 'high' ? '高' : task.priority === 'medium' ? '中' : '低'}
+        <span className={`inline-flex px-2 py-0.5 rounded-full text-xs font-medium ${priorityColors[task.priority]?.bg || 'bg-borderCream'} ${priorityColors[task.priority]?.text || 'text-stone'}`}>
+          {priorityColors[task.priority]?.label || task.priority}
         </span>
+        {acTotal > 0 && (
+          <span className="text-xs text-stone">
+            {Array.from({ length: acTotal }).map((_, idx) => {
+              const ac = task.acceptance_criteria[idx];
+              const color = ac?.status === 'pass' ? 'text-warmGreen' : ac?.status === 'fail' ? 'text-warmRed' : 'text-stone';
+              return <span key={idx} className={color}>{ac?.status === 'pass' ? '●' : ac?.status === 'fail' ? '✗' : '○'}</span>;
+            })}
+            {' '}{acPassed}/{acTotal}
+          </span>
+        )}
       </div>
 
-      {/* Acceptance Criteria Progress */}
-      {acTotal > 0 && (
-        <div className="mb-2">
-          <div className="flex justify-between text-xs mb-1">
-            <span className="text-gray-500">验收标准</span>
-            <span className="text-gray-600">{acPassed}/{acTotal}</span>
-          </div>
-          <div className="h-1.5 bg-gray-200 rounded-full overflow-hidden">
-            <div
-              className="h-full bg-green-500"
-              style={{ width: `${acPercentage}%` }}
-            />
-          </div>
-        </div>
-      )}
-
-      {/* Attempts */}
-      {task.attempts > 0 && (
-        <div className="text-xs text-gray-500">
-          尝试次数: {task.attempts}/3
-        </div>
-      )}
+      {/* Attempts + timestamp */}
+      <div className="flex items-center justify-between text-xs text-stone">
+        {task.attempts > 0 ? (
+          <span>尝试: {task.attempts}/3</span>
+        ) : (
+          <span>{task.id}</span>
+        )}
+      </div>
     </div>
   );
 }

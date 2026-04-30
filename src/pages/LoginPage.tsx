@@ -29,38 +29,38 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50">
-      <div className="max-w-md w-full p-8 bg-white rounded-lg shadow">
+    <div className="min-h-screen flex items-center justify-center bg-parchment">
+      <div className="max-w-md w-full p-8 bg-ivory rounded-2xl border border-borderCream shadow-whisper">
         <div className="text-center mb-8">
-          <h1 className="text-2xl font-bold text-gray-900">Dashboard</h1>
-          <p className="text-gray-500 mt-2">请登录以继续</p>
+          <h1 className="text-2xl font-medium font-serif text-nearblack">Dashboard</h1>
+          <p className="text-olive mt-2">请登录以继续</p>
         </div>
 
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
-            <label className="block text-sm text-gray-600 mb-2">用户名</label>
+            <label className="block text-sm text-olive mb-2">用户名</label>
             <input
               type="text"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+              className="w-full px-4 py-3 border border-borderCream rounded-xl bg-white focus:ring-2 focus:ring-focusBlue/30 focus:border-focusBlue transition-colors"
             />
           </div>
 
           <div className="mb-4">
-            <label className="block text-sm text-gray-600 mb-2">密码</label>
+            <label className="block text-sm text-olive mb-2">密码</label>
             <input
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="请输入密码"
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+              className="w-full px-4 py-3 border border-borderCream rounded-xl bg-white focus:ring-2 focus:ring-focusBlue/30 focus:border-focusBlue transition-colors"
               autoFocus
             />
           </div>
 
           {error && (
-            <div className="mb-4 p-3 bg-red-50 text-red-600 rounded-lg text-sm">
+            <div className="mb-4 p-3 bg-warmRedLight text-warmRed rounded-lg text-sm">
               {error}
             </div>
           )}
@@ -68,7 +68,7 @@ export default function LoginPage() {
           <button
             type="submit"
             disabled={loading || !password}
-            className="w-full py-3 px-4 bg-primary-500 hover:bg-primary-600 text-white font-medium rounded-lg disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+            className="w-full py-3 px-4 bg-terracotta hover:bg-terracotta-hover text-ivory font-medium rounded-xl disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
           >
             {loading ? '登录中...' : '登录'}
           </button>

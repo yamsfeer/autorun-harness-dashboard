@@ -9,7 +9,8 @@ interface LayoutProps {
 
 export default function Layout({ children, sidebar }: LayoutProps) {
   const navigate = useNavigate();
-  const { connected, setToken } = useStore();
+  const { connected, setToken, projects } = useStore();
+  const activeProjects = projects.filter(p => p.status === 'active').length;
 
   const handleLogout = () => {
     setToken(null);
@@ -17,25 +18,31 @@ export default function Layout({ children, sidebar }: LayoutProps) {
   };
 
   return (
-    <div className="h-screen flex flex-col bg-gray-50">
-      {/* Header - 极简 */}
-      <header className="h-9 bg-white border-b border-gray-200 flex items-center justify-between px-4 shrink-0 z-10">
+    <div className="h-screen flex flex-col bg-parchment">
+      {/* Header */}
+      <header className="h-14 bg-ivory border-b border-borderCream flex items-center justify-between px-5 shrink-0 z-10">
         <button
           onClick={() => navigate('/')}
-          className="text-sm font-semibold text-gray-900 hover:text-primary-600 transition-colors"
+          className="text-sm font-medium font-serif text-nearblack hover:text-terracotta transition-colors py-2"
+          style={{ fontFamily: 'Georgia, serif' }}
         >
           Autorun Harness
         </button>
 
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-4">
+          {/* 项目计数 */}
+          <span className="text-xs text-stone">
+            {projects.length} 个项目{activeProjects > 0 && ` · ${activeProjects} 运行中`}
+          </span>
+
           {/* 连接状态 */}
           <div className="flex items-center gap-1.5">
             <span
               className={`w-1.5 h-1.5 rounded-full ${
-                connected ? 'bg-green-500' : 'bg-red-500'
+                connected ? 'bg-warmGreen' : 'bg-stone'
               }`}
             />
-            <span className="text-xs text-gray-400">
+            <span className="text-xs text-stone">
               {connected ? '在线' : '离线'}
             </span>
           </div>
@@ -43,7 +50,7 @@ export default function Layout({ children, sidebar }: LayoutProps) {
           {/* 退出 */}
           <button
             onClick={handleLogout}
-            className="text-gray-400 hover:text-gray-600 text-xs"
+            className="text-stone hover:text-olive text-xs transition-colors py-2"
           >
             退出
           </button>
@@ -54,7 +61,7 @@ export default function Layout({ children, sidebar }: LayoutProps) {
       <div className="flex-1 flex overflow-hidden">
         {/* Sidebar */}
         {sidebar && (
-          <aside className="w-44 bg-white border-r border-gray-200 flex flex-col shrink-0 overflow-y-auto">
+          <aside className="w-44 bg-ivory border-r border-borderCream flex flex-col shrink-0 overflow-y-auto">
             {sidebar}
           </aside>
         )}

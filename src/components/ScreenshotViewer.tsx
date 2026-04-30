@@ -30,14 +30,14 @@ export default function ScreenshotViewer({ projectId, screenshots }: ScreenshotV
           <div
             key={idx}
             onClick={() => setSelectedIndex(idx)}
-            className="w-20 h-20 border border-gray-200 rounded-lg overflow-hidden cursor-pointer hover:border-primary-500 transition-colors"
+            className="w-20 h-20 border border-borderCream rounded-xl overflow-hidden cursor-pointer hover:shadow-ring-warm hover:border-ringWarm transition-all"
           >
             <img
               src={getUrl(screenshot)}
               alt={`Screenshot ${idx + 1}`}
               className="w-full h-full object-cover"
               onError={(e) => {
-                (e.target as HTMLImageElement).src = 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="80" height="80"><rect fill="%23f3f4f6" width="80" height="80"/><text x="40" y="45" text-anchor="middle" fill="%239ca3af" font-size="12">无图片</text></svg>';
+                (e.target as HTMLImageElement).src = 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="80" height="80"><rect fill="%23f0eee6" width="80" height="80"/><text x="40" y="45" text-anchor="middle" fill="%23696860" font-size="12">无图片</text></svg>';
               }}
             />
           </div>
@@ -47,7 +47,7 @@ export default function ScreenshotViewer({ projectId, screenshots }: ScreenshotV
       {/* Full size modal */}
       {selectedIndex !== null && (
         <div
-          className="fixed inset-0 bg-black/80 flex items-center justify-center z-50"
+          className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50"
           onClick={() => setSelectedIndex(null)}
         >
           <div className="relative max-w-4xl max-h-[90vh] p-4">
@@ -57,7 +57,7 @@ export default function ScreenshotViewer({ projectId, screenshots }: ScreenshotV
               className="max-w-full max-h-[80vh] object-contain"
               onClick={(e) => e.stopPropagation()}
             />
-            
+
             {/* Navigation */}
             {screenshots.length > 1 && (
               <>
@@ -66,7 +66,7 @@ export default function ScreenshotViewer({ projectId, screenshots }: ScreenshotV
                     e.stopPropagation();
                     setSelectedIndex((selectedIndex - 1 + screenshots.length) % screenshots.length);
                   }}
-                  className="absolute left-0 top-1/2 -translate-y-1/2 p-2 bg-white/20 hover:bg-white/40 rounded-r text-white"
+                  className="absolute left-0 top-1/2 -translate-y-1/2 p-2 bg-ivory/20 hover:bg-ivory/40 rounded-r text-white"
                 >
                   <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
@@ -77,7 +77,7 @@ export default function ScreenshotViewer({ projectId, screenshots }: ScreenshotV
                     e.stopPropagation();
                     setSelectedIndex((selectedIndex + 1) % screenshots.length);
                   }}
-                  className="absolute right-0 top-1/2 -translate-y-1/2 p-2 bg-white/20 hover:bg-white/40 rounded-l text-white"
+                  className="absolute right-0 top-1/2 -translate-y-1/2 p-2 bg-ivory/20 hover:bg-ivory/40 rounded-l text-white"
                 >
                   <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
@@ -87,7 +87,7 @@ export default function ScreenshotViewer({ projectId, screenshots }: ScreenshotV
             )}
 
             {/* Counter */}
-            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-black/50 text-white px-3 py-1 rounded-full text-sm">
+            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-black/50 text-ivory px-3 py-1 rounded-full text-sm">
               {selectedIndex + 1} / {screenshots.length}
             </div>
           </div>
