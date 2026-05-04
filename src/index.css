@@ -143,12 +143,13 @@ body {
 }
 
 .prose pre {
-  background-color: #141413;
-  color: #b0aea5;
+  background-color: #fdf6e8;
+  color: #5e5d59;
   padding: 0.75rem;
   border-radius: 0.5rem;
   overflow-x: auto;
   margin-bottom: 0.75rem;
+  border: 1px solid #e8e6dc;
 }
 
 .prose pre code {

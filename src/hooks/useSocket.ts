@@ -2,11 +2,11 @@ import { useEffect, useRef } from 'react';
 import { io, Socket } from 'socket.io-client';
 import { useStore } from '../stores/useStore';
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:9100';
 
 export function useSocket() {
   const socketRef = useRef<Socket | null>(null);
-  const { token, setConnected, updateProjectTasks, setProjectState, updateProjectStatus } = useStore();
+  const { token, setConnected, mergeProjectState, updateProjectStatus } = useStore();
 
   useEffect(() => {
     if (!token) {
@@ -37,11 +37,7 @@ export function useSocket() {
 
     socket.on('project:updated', (data: { projectId: string; updates: any }) => {
       console.log('项目更新:', data);
-      if (data.updates.tasks) {
-        updateProjectTasks(data.projectId, data.updates.tasks, data.updates.statistics);
-      } else {
-        setProjectState(data.projectId, data.updates);
-      }
+      mergeProjectState(data.projectId, data.updates);
     });
 
     socket.on('project:lost', (projectId: string) => {

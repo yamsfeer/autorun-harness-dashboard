@@ -109,6 +109,7 @@ interface StoreState {
   // 项目状态缓存
   projectStates: Record<string, ProjectState>;
   setProjectState: (projectId: string, state: ProjectState) => void;
+  mergeProjectState: (projectId: string, updates: Partial<ProjectState>) => void;
   updateProjectTasks: (projectId: string, tasks: Task[], statistics: Statistics) => void;
 
   // 当前选中的项目
@@ -150,6 +151,16 @@ export const useStore = create<StoreState>()(
       setProjectState: (projectId, state) => set((s) => ({
         projectStates: { ...s.projectStates, [projectId]: state },
       })),
+      mergeProjectState: (projectId, updates) => set((s) => {
+        const existing = s.projectStates[projectId];
+        if (!existing) return s;
+        return {
+          projectStates: {
+            ...s.projectStates,
+            [projectId]: { ...existing, ...updates },
+          },
+        };
+      }),
       updateProjectTasks: (projectId, tasks, statistics) => set((s) => {
         const existing = s.projectStates[projectId];
         if (!existing) return s;

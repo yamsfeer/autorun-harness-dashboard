@@ -43,11 +43,11 @@ export default function TaskBoard({ tasks, onTaskClick }: TaskBoardProps) {
           return (
             <div key={column.id} className="flex flex-col min-h-0">
               {/* Column Header */}
-              <div className={`px-2.5 py-1.5 rounded-md ${column.color} mb-2 shrink-0`}>
-                <div className="font-medium font-serif text-lg" style={{ fontFamily: 'Georgia, serif', color: column.id === 'pending' ? '#87867f' : column.id === 'in_progress' ? '#c96442' : column.id === 'completed' ? '#4a7c42' : '#b53333' }}>
+              <div className={`px-2.5 py-1 rounded-md ${column.color} mb-2 shrink-0 flex items-center justify-between`}>
+                <div className="font-medium font-serif text-base" style={{ fontFamily: 'Georgia, serif', color: column.id === 'pending' ? '#87867f' : column.id === 'in_progress' ? '#c96442' : column.id === 'completed' ? '#4a7c42' : '#b53333' }}>
                   {column.title}
                 </div>
-                <div className="text-sm text-olive">
+                <div className="text-sm font-medium text-stone">
                   {columnTasks.length}
                 </div>
               </div>
@@ -79,10 +79,11 @@ export default function TaskBoard({ tasks, onTaskClick }: TaskBoardProps) {
           onClick={() => setSelectedTask(null)}
         >
           <div
-            className="bg-ivory rounded-2xl p-5 w-full max-w-2xl max-h-[85vh] overflow-y-auto shadow-whisper"
+            className="bg-ivory rounded-2xl w-full max-w-2xl max-h-[85vh] shadow-whisper flex flex-col"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="flex items-start justify-between mb-4">
+            {/* Header - 固定在顶部 */}
+            <div className="shrink-0 flex items-start justify-between p-5 pb-3 border-b border-borderCream">
               <div>
                 <h3 className="text-lg font-medium font-serif text-nearblack">{selectedTask.title}</h3>
                 <p className="text-xs text-olive mt-1">
@@ -91,7 +92,7 @@ export default function TaskBoard({ tasks, onTaskClick }: TaskBoardProps) {
               </div>
               <button
                 onClick={() => setSelectedTask(null)}
-                className="text-stone hover:text-olive transition-colors"
+                className="text-stone hover:text-olive transition-colors shrink-0 ml-4"
               >
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -99,51 +100,54 @@ export default function TaskBoard({ tasks, onTaskClick }: TaskBoardProps) {
               </button>
             </div>
 
-            {/* Description */}
-            <div className="mb-5">
-              <h4 className="font-medium text-nearblack mb-2 text-sm">描述</h4>
-              <p className="text-olive text-sm leading-relaxed">{selectedTask.description}</p>
-            </div>
+            {/* Content - 可滚动 */}
+            <div className="flex-1 overflow-y-auto p-5">
+              {/* Description */}
+              <div className="mb-5">
+                <h4 className="font-medium text-nearblack mb-2 text-sm">描述</h4>
+                <p className="text-olive text-sm leading-relaxed">{selectedTask.description}</p>
+              </div>
 
-            {/* Acceptance Criteria */}
-            <div className="mb-5">
-              <h4 className="font-medium text-nearblack mb-2 text-sm">验收标准</h4>
-              <div className="space-y-2">
-                {selectedTask.acceptance_criteria.map((ac) => (
-                  <div key={ac.id} className="border border-borderCream rounded-lg p-3">
-                    <div className="flex items-center gap-2 mb-2">
-                      <span
-                        className={`w-2 h-2 rounded-full ${
-                          ac.status === 'pass' ? 'bg-warmGreen' :
-                          ac.status === 'fail' ? 'bg-warmRed' : 'bg-stone'
-                        }`}
-                      />
-                      <span className="font-medium text-sm">{ac.description}</span>
+              {/* Acceptance Criteria */}
+              <div className="mb-5">
+                <h4 className="font-medium text-nearblack mb-2 text-sm">验收标准</h4>
+                <div className="space-y-2">
+                  {selectedTask.acceptance_criteria.map((ac) => (
+                    <div key={ac.id} className="border border-borderCream rounded-lg p-3">
+                      <div className="flex items-center gap-2 mb-2">
+                        <span
+                          className={`w-2 h-2 rounded-full ${
+                            ac.status === 'pass' ? 'bg-warmGreen' :
+                            ac.status === 'fail' ? 'bg-warmRed' : 'bg-stone'
+                          }`}
+                        />
+                        <span className="font-medium text-sm">{ac.description}</span>
+                      </div>
+                      <ol className="text-sm text-olive space-y-1 ml-4">
+                        {ac.steps.map((step, idx) => (
+                          <li key={idx} className="list-decimal">{step}</li>
+                        ))}
+                      </ol>
                     </div>
-                    <ol className="text-sm text-olive space-y-1 ml-4">
-                      {ac.steps.map((step, idx) => (
-                        <li key={idx} className="list-decimal">{step}</li>
-                      ))}
-                    </ol>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Notes */}
-            {selectedTask.notes.length > 0 && (
-              <div>
-                <h4 className="font-medium text-nearblack mb-2 text-sm">备注</h4>
-                <ul className="text-sm text-olive space-y-1">
-                  {selectedTask.notes.map((note, idx) => (
-                    <li key={idx} className="flex items-start gap-2">
-                      <span className="text-stone">•</span>
-                      {note}
-                    </li>
                   ))}
-                </ul>
+                </div>
               </div>
-            )}
+
+              {/* Notes */}
+              {selectedTask.notes.length > 0 && (
+                <div>
+                  <h4 className="font-medium text-nearblack mb-2 text-sm">备注</h4>
+                  <ul className="text-sm text-olive space-y-1">
+                    {selectedTask.notes.map((note, idx) => (
+                      <li key={idx} className="flex items-start gap-2">
+                        <span className="text-stone">•</span>
+                        {note}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+            </div>
           </div>
         </div>
       )}

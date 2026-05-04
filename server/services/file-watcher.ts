@@ -34,7 +34,6 @@ export class FileWatcher {
     }
 
     const watcher = chokidar.watch(harnessDir, {
-      ignored: /(^|[\/\\])\../, // 忽略隐藏文件
       persistent: true,
       ignoreInitial: true,
       awaitWriteFinish: {
